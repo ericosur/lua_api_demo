@@ -3,7 +3,17 @@
 # This file is written for use on Mac OS X.
 #
 
-all: apidemo.so
+CC=gcc
+LUADIR=${HOME}/Downloads/lua/lua-5.4.3/src
+TARGET=apidemo.so
 
-apidemo.so: apidemo.c
-	cc -bundle -undefined dynamic_lookup -o apidemo.so apidemo.c -Ilua_src
+all: ${TARGET}
+
+apidemo.o: apidemo.c
+	${CC} -o $@ -Wall -fPIC -c $< -I${LUADIR}
+
+apidemo.so: apidemo.o
+	${CC} -o $@ -shared $<
+
+clean:
+	rm -f ${TARGET} *.o
